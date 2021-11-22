@@ -17,7 +17,11 @@ class MovieController extends Controller
     public function index(Request $request)
     {
         $title = $request->query('title', '');
-        $movies = Movie::searchByTitle($title)->get();
+        $movies = Movie::searchByTitle($title)
+                        // ->limit($request->query('take'), 10)
+                        // ->offset($request->query('skip', 0))
+                        // ->get();
+                        ->paginate($request->query('per_page'), 10);
         
         return response()->json($movies);
     }
